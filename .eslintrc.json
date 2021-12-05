@@ -25,6 +25,7 @@
         "react",
         "@typescript-eslint"
     ],
+    "globals": {"JSX":"readonly"},
     "rules": {
         "indent": [
             "error",

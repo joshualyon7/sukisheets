@@ -1,0 +1,92 @@
+{
+    "acrobatics": {
+        "name": "acrobatics",
+        "ability": "dex",
+        "proficient": false
+    },
+    "animal handling": {
+        "name": "animal handling",
+        "ability": "wis",
+        "proficient": false
+    },
+    "arcana": {
+        "name": "arcana",
+        "ability": "int",
+        "proficient": false
+    },
+    "athletics": {
+        "name": "athletics",
+        "ability": "str",
+        "proficient": false
+    },
+    "deception": {
+        "name": "deception",
+        "ability": "cha",
+        "proficient": false
+    },
+    "history": {
+        "name": "history",
+        "ability": "int",
+        "proficient": false
+    },
+    "insight": {
+        "name": "insight",
+        "ability": "wis",
+        "proficient": false
+    },
+    "intimidation": {
+        "name": "intimidation",
+        "ability": "cha",
+        "proficient": false
+    },
+    "investigation": {
+        "name": "investigation",
+        "ability": "int",
+        "proficient": false
+    },
+    "medicine": {
+        "name": "medicine",
+        "ability": "dex",
+        "proficient": false
+    },
+    "nature": {
+        "name": "nature",
+        "ability": "int",
+        "proficient": false
+    },
+    "perception": {
+        "name": "perception",
+        "ability": "wis",
+        "proficient": false
+    },
+    "performance": {
+        "name": "performance",
+        "ability": "cha",
+        "proficient": false
+    },
+    "persuasion": {
+        "name": "persuasion",
+        "ability": "cha",
+        "proficient": false
+    },
+    "religion": {
+        "name": "religion",
+        "ability": "int",
+        "proficient": false
+    },
+    "sleight of hand": {
+        "name": "sleight of hand",
+        "ability": "dex",
+        "proficient": false
+    },
+    "stealth": {
+        "name": "stealth",
+        "ability": "dex",
+        "proficient": false
+    },
+    "survival": {
+        "name": "survival",
+        "ability": "wis",
+        "proficient": false
+    }
+}

@@ -5,39 +5,44 @@ import './App.css';
 import StatPane from './components/StatPane';
 import CombatPane from './components/CombatPane';
 import InfoPane from './components/InfoPane';
-import { CharInfo, CharInfoAction } from './types/CharInfo';
-import { StatInfo } from './types/StatInfo';
+// import { CharInfo, CharInfoAction } from './types/CharInfo';
+import { Ability, AbilityInfo } from './types/Ability';
+import { calculateModifier } from './utilities';
+import { Skill } from './types/Skill';
+import { CharInfo, charReducer, initChar } from './types/CharInfo';
 
-function reducer(pc: CharInfo, action: CharInfoAction): CharInfo {
-    switch (action.type) {
-    case 'setHealth':
-        return { ...pc, hp: action.payload as number };
-    case 'setLevel':
-        return { ...pc, level: action.payload as number };
-    case 'setName':
-        return { ...pc, name: action.payload as string };
-    case 'setStats':
-        return { ...pc, stats: action.payload as StatInfo };
-    case 'setTempHealth':
-        return { ...pc, tempHp: action.payload as number };
-    case 'setCharInfo':
-        return action.payload as CharInfo;
-    default:
-        throw new Error();
-    }
-}
+const DEFAULT_ABILITY_SCORE = 12;
+
+export const skillMap = new Map<Ability, Skill[]>([
+    [Ability.STR, [Skill.ATHLETICS, ]],
+    [Ability.DEX, [Skill.ACROBATICS, Skill.SLEIGHT_OF_HAND, Skill.STEALTH]],
+    [Ability.INT, [Skill.ARCANA, Skill.HISTORY, Skill.INVESTIGATION, Skill.NATURE, Skill.RELIGION]],
+    [Ability.WIS, [Skill.ANIMAL_HANDLING, Skill.INSIGHT, Skill.MEDICINE, Skill.PERCEPTION, Skill.SURVIVAL]],
+    [Ability.CHA, [Skill.DECEPTION, Skill.INTIMIDATION, Skill.PERFORMANCE, Skill.PERSUASION]],
+    [Ability.CON, []]
+]);
+
+const DEFAULT_ABILITY_MAP = new Map<Ability, AbilityInfo>(Object.values(Ability).map(ability => {
+    return [ability, {
+        name: ability,
+        value: DEFAULT_ABILITY_SCORE,
+        modifier: calculateModifier(DEFAULT_ABILITY_SCORE),
+        relevantSkills: skillMap.get(ability) || []
+    }];
+}));
 
 function App() {
-    const initialState: CharInfo = {level: 1, name: 'tim'};
-    const [curPc, dispatchPc] = useReducer(reducer, initialState);
+    const initialState: CharInfo = {name: 'Tim', abilities: DEFAULT_ABILITY_MAP, proficiencies: []};
+    const [curChar, dispatchChar] = useReducer(charReducer, initialState, initChar);
+    console.log(curChar);
 
     return (
-        <Container className='App'>
-            <Row>
-                <Col lg={9}>
-                    <InfoPane pc={curPc} dispatchPc={dispatchPc}/>
-                    <Row>
-                        <StatPane/>
+        <Container fluid className='h-100 App'>
+            <Row className='h-100'>
+                <Col lg={9} className='h-100'>
+                    <InfoPane/>
+                    <Row className='h-100'>
+                        <StatPane char={curChar} dispatch={dispatchChar}/>
                         <CombatPane/>
                     </Row>
                 </Col>
@@ -47,7 +52,6 @@ function App() {
                     </Row>
                     <Row>
                         Inventory and equipment
-
                     </Row>
                 </Col>
             </Row>
