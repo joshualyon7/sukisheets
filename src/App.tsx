@@ -12,6 +12,7 @@ import { Skill } from './types/Skill';
 import { CharInfo, charReducer, initChar } from './types/CharInfo';
 
 const DEFAULT_ABILITY_SCORE = 12;
+const DEFAULT_BASE_AC = 10;
 
 export const skillMap = new Map<Ability, Skill[]>([
     [Ability.STR, [Skill.ATHLETICS, ]],
@@ -32,7 +33,12 @@ const DEFAULT_ABILITY_MAP = new Map<Ability, AbilityInfo>(Object.values(Ability)
 }));
 
 function App() {
-    const initialState: CharInfo = {name: 'Tim', abilities: DEFAULT_ABILITY_MAP, proficiencies: []};
+    const initialState: CharInfo = {
+        name: 'Tim',
+        abilities: DEFAULT_ABILITY_MAP,
+        proficiencies: [],
+        baseAc: DEFAULT_BASE_AC
+    };
     const [curChar, dispatchChar] = useReducer(charReducer, initialState, initChar);
     console.log(curChar);
 
@@ -43,7 +49,7 @@ function App() {
                     <InfoPane/>
                     <Row className='h-100'>
                         <StatPane char={curChar} dispatch={dispatchChar}/>
-                        <CombatPane/>
+                        <CombatPane char={curChar} _dispatch={dispatchChar}/>
                     </Row>
                 </Col>
                 <Col lg={3}>

@@ -27,6 +27,7 @@ export interface CharInfo {
     name: string,
     abilities: Map<Ability, AbilityInfo>,
     proficiencies: Skill[];
+    baseAc: number
 }
 
 export interface CharInfoAction {
