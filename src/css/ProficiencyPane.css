@@ -1,3 +1,4 @@
-.skill-box {
-    
+#table-div {
+    overflow: scroll;
+    max-height: 50%;
 }

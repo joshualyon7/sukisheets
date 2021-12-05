@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Row, Table } from 'react-bootstrap';
 import '../App.css';
 import '../css/StatPane.css';
 import { Ability } from '../types/Ability';
@@ -10,42 +10,60 @@ import { ProficiencyPane } from './ProficiencyPane';
 export default function StatPane({ char, dispatch }: { char: CharInfo, dispatch: React.Dispatch<CharInfoAction> }) {
     function handleStatDClick(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
         const target = e.target as HTMLInputElement;
-        target.value = '';
         target.readOnly = false;
     }
-
-    function handleStatChange(e: React.ChangeEvent<HTMLInputElement>) {
+    function handleBlur(e: React.FocusEvent<HTMLInputElement, Element>) {
         const target = e.target as HTMLInputElement;
         const newValue = Number.parseInt(target.value);
-        if (Number.isNaN(newValue)) return;
-        dispatch({type: 'setAbility', payload: {
-            ...char.abilities.get(target.title as Ability)!,
-            value: newValue,
-            modifier: calculateModifier(newValue)
-        }});
+        if (Number.isNaN(newValue)) {
+            return;
+        }
+        dispatch({
+            type: 'setAbility', payload: {
+                ...char.abilities.get(target.title as Ability)!,
+                value: newValue,
+                modifier: calculateModifier(newValue)
+            }
+        });
+        target.readOnly = true;
     }
+
     return (
         <Col id='stat-col'>
             <Row>
                 <Col>
-                    {Array.from(char.abilities.values()).map(ability => {
-                        return (
-                            <div className='stat-box' key={ability.name}>
-                                {ability.name.toUpperCase()}<br/>{makeSignedNumber(ability.modifier)}
-                                (<input
-                                    className='stat-input'
-                                    defaultValue={ability.value}
-                                    title={ability.name.toLowerCase()}
-                                    type='number'
-                                    readOnly
-                                    onDoubleClick={(e) => handleStatDClick(e)}
-                                    onChange={(e) => handleStatChange(e)}/>)
-                            </div>
-                        );
-                    })}
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>Ability</th>
+                                <th>Value</th>
+                                <th>Mod</th>
+                            </tr>
+                        </thead>
+                        <tbody> {
+                            Array.from (char.abilities.values()).map(ability => {
+                                return (
+                                    <tr key={ability.name}>
+                                        <td>{ability.name.toUpperCase()}</td>
+                                        <td>
+                                            <input className='stat-input'
+                                                defaultValue={ability.value}
+                                                title={ability.name.toLowerCase()}
+                                                type ='string'
+                                                readOnly
+                                                onDoubleClick={(e) => handleStatDClick(e)}
+                                                onBlur={(e) => handleBlur(e)}
+                                            />
+                                        </td>
+                                        <td>{makeSignedNumber(ability.modifier)}</td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </Table>
                 </Col>
                 <Col>
-                    <ProficiencyPane char={char} dispatch={dispatch}/>
+                    <ProficiencyPane char={char} dispatch={dispatch} />
                 </Col>
             </Row>
         </Col>

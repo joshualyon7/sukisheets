@@ -54,18 +54,20 @@ export function ProficiencyPane({ char, dispatch }: { char: CharInfo, dispatch: 
     }
 
     return (
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>Prof</th>
-                    <th>Mod</th>
-                    <th>Skill</th>
-                    <th>Bonus</th>
-                </tr>
-            </thead>
-            <tbody>
-                {makeSkillBoxes()}
-            </tbody>
-        </Table>
+        <div id='table-div'>
+            <Table striped bordered hover>
+                <thead>
+                    <tr>
+                        <th>Prof</th>
+                        <th>Mod</th>
+                        <th>Skill</th>
+                        <th>Bonus</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {makeSkillBoxes()}
+                </tbody>
+            </Table>
+        </div>
     );
 }
