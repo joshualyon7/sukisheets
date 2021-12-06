@@ -4,6 +4,7 @@ import { ICharInfo, ICharInfoAction } from '../types/CharInfo';
 import { diceToString } from '../utilities';
 import HealthPane from './HealthPane';
 import '../css/CombatPane.css';
+import '../App.css';
 
 export default function CombatPane({char, _dispatch}: {
     char: ICharInfo, _dispatch: Dispatch<ICharInfoAction>
@@ -12,7 +13,7 @@ export default function CombatPane({char, _dispatch}: {
 
     function DeathSavePane() {
         return (
-            <div>
+            <div className='raised-pane'>
                 <div>
                     Successes -
                     <input className='save-input' type='checkbox'></input>
@@ -33,11 +34,16 @@ export default function CombatPane({char, _dispatch}: {
         <Col lg={8}>
             <Row>
                 <HealthPane char={char} _dispatch={_dispatch}></HealthPane>
-                <Col>
+                <Col className='pane'>
                     <Row>
-                        <InfoBox title='Hit Dice' value={hitDice}/>
-                        <InfoBox title='Initiative' value={'13'}/>
-                        <InfoBox title='Death Saves'><DeathSavePane/></InfoBox>
+                        <Col>
+                            <InfoBox title='Hit Dice' value={hitDice}/>
+                            <InfoBox title='Initiative' value={'13'}/>
+                        </Col>
+                        <Col>
+                            <InfoBox title='Death Saves'><DeathSavePane/></InfoBox>
+                            <InfoBox title='Speed'></InfoBox>
+                        </Col>
                     </Row>
                 </Col>
             </Row>
@@ -54,7 +60,7 @@ export default function CombatPane({char, _dispatch}: {
 
 function InfoBox({title, value, children}: {title: string, value?: string, children?: JSX.Element}) {
     return (
-        <div className='info-box'>
+        <div className='info-box raised-pane'>
             <div>{value || children}</div>
             <div>{title}</div>
         </div>

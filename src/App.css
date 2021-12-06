@@ -42,3 +42,11 @@
     transform: rotate(360deg);
   }
 }
+
+.pane {
+  background-color: #38393bc5;
+}
+
+.raised-pane {
+  background-color: white;
+}

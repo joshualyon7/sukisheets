@@ -11,10 +11,12 @@ import { calculateModifier } from './utilities';
 import { ESkill } from './types/Skill';
 import { ICharInfo, charReducer, initChar } from './types/CharInfo';
 import { classes } from './types/Class';
+import { races } from './types/Race';
 
 const DEFAULT_ABILITY_SCORE = 12;
 const DEFAULT_BASE_AC = 10;
 const DEFAULT_CLASSES = [classes.get('wizard')!, classes.get('fighter')!];
+const DEFAULT_RACE = races.get('human')!;
 
 export const skillMap = new Map<EAbility, ESkill[]>([
     [EAbility.STR, [ESkill.ATHLETICS, ]],
@@ -40,7 +42,8 @@ function App() {
         abilities: DEFAULT_ABILITY_MAP,
         proficiencies: [],
         baseAc: DEFAULT_BASE_AC,
-        classList: DEFAULT_CLASSES
+        classList: DEFAULT_CLASSES,
+        race: DEFAULT_RACE
     };
     const [curChar, dispatchChar] = useReducer(charReducer, initialState, initChar);
 

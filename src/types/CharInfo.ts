@@ -2,6 +2,7 @@ import { AbilityInfo } from './AbilityInfo';
 import { ESkill } from './Skill';
 import { EAbility } from './AbilityInfo';
 import { IClass } from './Class';
+import { IRace } from './Race';
 
 export function initChar(initialChar: ICharInfo) {
     return initialChar;
@@ -30,7 +31,8 @@ export interface ICharInfo {
     abilities: Map<EAbility, AbilityInfo>,
     proficiencies: ESkill[];
     baseAc: number,
-    classList: IClass[]
+    classList: IClass[],
+    race: IRace
 }
 
 export interface ICharInfoAction {
