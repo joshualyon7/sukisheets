@@ -6,24 +6,26 @@ import StatPane from './components/StatPane';
 import CombatPane from './components/CombatPane';
 import InfoPane from './components/InfoPane';
 // import { CharInfo, CharInfoAction } from './types/CharInfo';
-import { Ability, AbilityInfo } from './types/Ability';
+import { EAbility, AbilityInfo } from './types/AbilityInfo';
 import { calculateModifier } from './utilities';
-import { Skill } from './types/Skill';
-import { CharInfo, charReducer, initChar } from './types/CharInfo';
+import { ESkill } from './types/Skill';
+import { ICharInfo, charReducer, initChar } from './types/CharInfo';
+import { classes } from './types/Class';
 
 const DEFAULT_ABILITY_SCORE = 12;
 const DEFAULT_BASE_AC = 10;
+const DEFAULT_CLASSES = [classes.get('wizard')!, classes.get('fighter')!];
 
-export const skillMap = new Map<Ability, Skill[]>([
-    [Ability.STR, [Skill.ATHLETICS, ]],
-    [Ability.DEX, [Skill.ACROBATICS, Skill.SLEIGHT_OF_HAND, Skill.STEALTH]],
-    [Ability.INT, [Skill.ARCANA, Skill.HISTORY, Skill.INVESTIGATION, Skill.NATURE, Skill.RELIGION]],
-    [Ability.WIS, [Skill.ANIMAL_HANDLING, Skill.INSIGHT, Skill.MEDICINE, Skill.PERCEPTION, Skill.SURVIVAL]],
-    [Ability.CHA, [Skill.DECEPTION, Skill.INTIMIDATION, Skill.PERFORMANCE, Skill.PERSUASION]],
-    [Ability.CON, []]
+export const skillMap = new Map<EAbility, ESkill[]>([
+    [EAbility.STR, [ESkill.ATHLETICS, ]],
+    [EAbility.DEX, [ESkill.ACROBATICS, ESkill.SLEIGHT_OF_HAND, ESkill.STEALTH]],
+    [EAbility.INT, [ESkill.ARCANA, ESkill.HISTORY, ESkill.INVESTIGATION, ESkill.NATURE, ESkill.RELIGION]],
+    [EAbility.WIS, [ESkill.ANIMAL_HANDLING, ESkill.INSIGHT, ESkill.MEDICINE, ESkill.PERCEPTION, ESkill.SURVIVAL]],
+    [EAbility.CHA, [ESkill.DECEPTION, ESkill.INTIMIDATION, ESkill.PERFORMANCE, ESkill.PERSUASION]],
+    [EAbility.CON, []]
 ]);
 
-const DEFAULT_ABILITY_MAP = new Map<Ability, AbilityInfo>(Object.values(Ability).map(ability => {
+const DEFAULT_ABILITY_MAP = new Map<EAbility, AbilityInfo>(Object.values(EAbility).map(ability => {
     return [ability, {
         name: ability,
         value: DEFAULT_ABILITY_SCORE,
@@ -33,14 +35,14 @@ const DEFAULT_ABILITY_MAP = new Map<Ability, AbilityInfo>(Object.values(Ability)
 }));
 
 function App() {
-    const initialState: CharInfo = {
+    const initialState: ICharInfo = {
         name: 'Tim',
         abilities: DEFAULT_ABILITY_MAP,
         proficiencies: [],
-        baseAc: DEFAULT_BASE_AC
+        baseAc: DEFAULT_BASE_AC,
+        classList: DEFAULT_CLASSES
     };
     const [curChar, dispatchChar] = useReducer(charReducer, initialState, initChar);
-    console.log(curChar);
 
     return (
         <Container fluid className='h-100 App'>

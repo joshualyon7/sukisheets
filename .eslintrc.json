@@ -65,6 +65,7 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "eol-last": "error"
     }
 }

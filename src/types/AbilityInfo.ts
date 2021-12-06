@@ -1,12 +1,12 @@
-import { Skill } from './Skill';
+import { ESkill } from './Skill';
 
 export interface AbilityInfo {
-    name: Ability,
+    name: EAbility,
     value: number,
     modifier: number,
-    relevantSkills: Skill[]
+    relevantSkills: ESkill[]
 }
 
-export enum Ability {
+export enum EAbility {
     STR = 'str', DEX = 'dex', CON = 'con', INT = 'int', WIS = 'wis', CHA = 'cha'
 }

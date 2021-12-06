@@ -1,0 +1,12 @@
+[
+    {
+        "name": "wizard",
+        "hitDice": "6",
+        "features": []
+    },
+    {
+        "name": "fighter",
+        "hitDice": "10",
+        "features": []
+    }
+]

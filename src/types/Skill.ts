@@ -1,5 +1,4 @@
-
-export enum Skill {
+export enum ESkill {
     ATHLETICS = 'athletics',
     ACROBATICS = 'acrobatics',
     SLEIGHT_OF_HAND = 'sleight of hand',

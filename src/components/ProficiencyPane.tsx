@@ -2,11 +2,11 @@ import React, { Dispatch } from 'react';
 import '../css/ProficiencyPane.css';
 import { Table } from 'react-bootstrap';
 import { makeSignedNumber } from '../utilities';
-import { CharInfo, CharInfoAction } from '../types/CharInfo';
-import { Skill } from '../types/Skill';
+import { ICharInfo, ICharInfoAction } from '../types/CharInfo';
+import { ESkill } from '../types/Skill';
 // import { Stat } from '../types/StatInfo';
 
-export function ProficiencyPane({ char, dispatch }: { char: CharInfo, dispatch: Dispatch<CharInfoAction> }) {
+export function ProficiencyPane({ char, dispatch }: { char: ICharInfo, dispatch: Dispatch<ICharInfoAction> }) {
     function makeSkillBoxes(): JSX.Element[] {
         const boxArr: JSX.Element[] = [];
 
@@ -24,7 +24,7 @@ export function ProficiencyPane({ char, dispatch }: { char: CharInfo, dispatch: 
         return boxArr;
     }
 
-    function SkillBox({ability, skill, modifier}: {ability: string, skill: Skill, modifier: number}) {
+    function SkillBox({ability, skill, modifier}: {ability: string, skill: ESkill, modifier: number}) {
         console.log('rendering prof pane');
 
         return (
@@ -46,7 +46,7 @@ export function ProficiencyPane({ char, dispatch }: { char: CharInfo, dispatch: 
         const target = e.target as HTMLInputElement;
         console.log(`target.checked: ${target.checked}`);
 
-        const action: CharInfoAction = {
+        const action: ICharInfoAction = {
             type: `${target.checked ? 'add' : 'remove'}Proficiency`,
             payload: target.value
         };

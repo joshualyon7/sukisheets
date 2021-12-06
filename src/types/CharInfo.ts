@@ -1,11 +1,13 @@
-import { Ability, AbilityInfo } from './Ability';
-import { Skill } from './Skill';
+import { AbilityInfo } from './AbilityInfo';
+import { ESkill } from './Skill';
+import { EAbility } from './AbilityInfo';
+import { IClass } from './Class';
 
-export function initChar(initialChar: CharInfo) {
+export function initChar(initialChar: ICharInfo) {
     return initialChar;
 }
 
-export function charReducer(char: CharInfo, action: CharInfoAction): CharInfo {
+export function charReducer(char: ICharInfo, action: ICharInfoAction): ICharInfo {
     switch (action.type) {
     case 'setName':
         return { ...char, name: action.payload as string };
@@ -14,23 +16,24 @@ export function charReducer(char: CharInfo, action: CharInfoAction): CharInfo {
         char.abilities.set((action.payload as AbilityInfo).name, action.payload as AbilityInfo);
         return { ...char };
     case 'addProficiency':
-        return { ...char, proficiencies: [...char.proficiencies, action.payload as Skill] };
+        return { ...char, proficiencies: [...char.proficiencies, action.payload as ESkill] };
     case 'removeProficiency':
-        return { ...char, proficiencies: char.proficiencies.filter(prof => prof !== action.payload as Skill)};
+        return { ...char, proficiencies: char.proficiencies.filter(prof => prof !== action.payload as ESkill)};
     case 'reset':
-        return initChar(action.payload as CharInfo);
+        return initChar(action.payload as ICharInfo);
     default:
         throw new Error('Illegal reducer action!');
     }
 }
-export interface CharInfo {
+export interface ICharInfo {
     name: string,
-    abilities: Map<Ability, AbilityInfo>,
-    proficiencies: Skill[];
-    baseAc: number
+    abilities: Map<EAbility, AbilityInfo>,
+    proficiencies: ESkill[];
+    baseAc: number,
+    classList: IClass[]
 }
 
-export interface CharInfoAction {
+export interface ICharInfoAction {
     type: 'setAbility' | 'setName'| 'reset' | 'addProficiency' | 'removeProficiency',
-    payload: string | AbilityInfo | CharInfo | Skill
+    payload: string | AbilityInfo | ICharInfo | ESkill
 }

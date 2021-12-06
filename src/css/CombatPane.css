@@ -1,0 +1,9 @@
+.info-box {
+    padding: 5px;
+    border: 1px solid black;
+}
+
+.save-input {
+    display: inline-block;
+    margin: 5px;
+}

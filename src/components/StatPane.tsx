@@ -2,12 +2,12 @@ import React from 'react';
 import { Col, Row, Table } from 'react-bootstrap';
 import '../App.css';
 import '../css/StatPane.css';
-import { Ability } from '../types/Ability';
-import { CharInfo, CharInfoAction } from '../types/CharInfo';
+import { EAbility } from '../types/AbilityInfo';
+import { ICharInfo, ICharInfoAction } from '../types/CharInfo';
 import { calculateModifier, makeSignedNumber } from '../utilities';
 import { ProficiencyPane } from './ProficiencyPane';
 
-export default function StatPane({ char, dispatch }: { char: CharInfo, dispatch: React.Dispatch<CharInfoAction> }) {
+export default function StatPane({ char, dispatch }: { char: ICharInfo, dispatch: React.Dispatch<ICharInfoAction> }) {
     function handleStatDClick(e: React.MouseEvent<HTMLInputElement, MouseEvent>) {
         const target = e.target as HTMLInputElement;
         target.readOnly = false;
@@ -20,7 +20,7 @@ export default function StatPane({ char, dispatch }: { char: CharInfo, dispatch:
         }
         dispatch({
             type: 'setAbility', payload: {
-                ...char.abilities.get(target.title as Ability)!,
+                ...char.abilities.get(target.title as EAbility)!,
                 value: newValue,
                 modifier: calculateModifier(newValue)
             }

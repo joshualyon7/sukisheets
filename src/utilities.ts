@@ -1,3 +1,5 @@
+import { DicePair, EDice } from './types/Dice';
+
 /**
  * Calculates the modifier for a given ability score based on the table in
  * the player's handbook.
@@ -20,4 +22,8 @@ export function calculateModifier(abilityScore: number): number {
  */
 export function makeSignedNumber(value: number): string {
     return value >= 0 ? `+${value}` : `${value}`;
+}
+
+export function diceToString([amount, type]: DicePair): string {
+    return `${amount}${EDice[type].toLowerCase()}`;
 }
