@@ -12,6 +12,8 @@
 }
 
 .health-info-box-wrapper {
+    display: flex;
+    flex-direction: column;
     height: 100%;
     border: 2px double black;
 }
@@ -27,15 +29,20 @@
 
 .cur-hp-input {
     height: 50%;
-    width: 50%;
+    width: 30%;
     justify-content: right;
     display: inline-flex;
 }
 
-.hp-fraction-box {
+.hp-display-box {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: row;
+}
+
+.hp-fraction-box {
+    
 }
 
 .max-hp {
@@ -44,6 +51,12 @@
 
 .tmp-hp-box {
     width: 25%;
+}
+
+.hp-change-wrapper {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
 }
 
 .ac-box {

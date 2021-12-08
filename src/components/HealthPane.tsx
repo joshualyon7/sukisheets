@@ -28,18 +28,21 @@ export default function HealthPane({char, dispatch}: {
                     content={char.baseAc + calculateModifier(char.abilities.get(EAbility.DEX)!.value)}/>
                 <HealthInfoBox className='hp-box'
                     header='Hit Points'>
-                    <div className='hp-fraction-box'>
-                        <ChangeableStatBox
-                            title='curHp'
-                            value={char.curHp}
-                            onChange={handleHpChange}
-                            className='cur-hp-input'
-                        /><span className='max-hp'> / {Math.max.apply(Math, char.classList.map(c => c.hitDice))}</span>
+                    <div className='hp-display-box'>
+                        <HealthChanger curHp={char.curHp} dispatch={dispatch}/>
+                        <div className='hp-fraction-box'>
+                            <ChangeableStatBox
+                                title='curHp'
+                                value={char.curHp}
+                                onChange={handleHpChange}
+                                className='cur-hp-input'
+                            /><span className='max-hp'> / {Math.max.apply(Math, char.classList.map(c => c.hitDice))}</span>
+                        </div>
                     </div>
                 </HealthInfoBox>
                 <HealthInfoBox className='tmp-hp-box'
                     header='Temporary Hit Points'
-                    content={char.tempHp || `${0}`}/>
+                    content={char.tempHp || '--'}/>
             </Row>
         </Col>
     );
@@ -49,9 +52,26 @@ function HealthInfoBox({header, content, children, className}:
     {header: string, content?: string | number, children?: JSX.Element | JSX.Element[], className?: string}) {
     return (
         <div className={`health-info-box-wrapper ${className}`}>
-            <div className='health-info-box-header'>{header}</div><br/>
-            {children !== undefined && <div className='hp-fraction-box'>{children}</div>}
+            <div className='health-info-box-header'>{header}</div>
+            {children !== undefined && children}
             {content !== undefined && <div className='health-info-box-content'>{content}</div>}
+        </div>
+    );
+}
+
+function HealthChanger({curHp, dispatch}: {curHp: number, dispatch: Dispatch<ICharInfoAction>}) {
+    function incrementHp() {
+        dispatch({type: 'setCurHp', payload: curHp + 1});
+    }
+
+    function decrementHp() {
+        dispatch({type: 'setCurHp', payload: curHp - 1});
+    }
+
+    return (
+        <div className='hp-change-wrapper'>
+            <button onClick={() => incrementHp()}>+</button>
+            <button onClick={() => decrementHp()}>-</button>
         </div>
     );
 }
