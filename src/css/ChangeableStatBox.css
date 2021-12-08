@@ -4,3 +4,7 @@
 .stat-input:not(:focus) {
     border: none;
 }
+
+.dummy {
+    display: none;
+}

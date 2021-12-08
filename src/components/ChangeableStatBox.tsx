@@ -15,7 +15,7 @@ export function ChangeableStatBox({title, value, onChange, className}: {
     return (
         <div className={className}>
             <input className='stat-input center-input'
-                defaultValue={value}
+                value={value}
                 title={title}
                 type ='string'
                 readOnly

@@ -34,6 +34,8 @@
     display: inline-flex;
 }
 
+.red {background-color: red;}
+
 .hp-display-box {
     display: flex;
     justify-content: center;

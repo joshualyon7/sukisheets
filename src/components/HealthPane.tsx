@@ -9,7 +9,7 @@ import '../css/HealthPane.css';
 export default function HealthPane({char, dispatch}: {
     char: ICharInfo, dispatch: Dispatch<ICharInfoAction>
 }) {
-    console.log('rendering health pane');
+    const maxHp = Math.max.apply(Math, char.classList.map(c => c.hitDice));
 
     function handleHpChange(e: React.FocusEvent<HTMLInputElement, Element>) {
         const target = e.target as HTMLInputElement;
@@ -29,14 +29,14 @@ export default function HealthPane({char, dispatch}: {
                 <HealthInfoBox className='hp-box'
                     header='Hit Points'>
                     <div className='hp-display-box'>
-                        <HealthChanger curHp={char.curHp} dispatch={dispatch}/>
+                        <HealthChanger maxHp={maxHp} curHp={char.curHp} dispatch={dispatch}/>
                         <div className='hp-fraction-box'>
                             <ChangeableStatBox
                                 title='curHp'
                                 value={char.curHp}
                                 onChange={handleHpChange}
                                 className='cur-hp-input'
-                            /><span className='max-hp'> / {Math.max.apply(Math, char.classList.map(c => c.hitDice))}</span>
+                            /><span className='max-hp'> / {maxHp}</span>
                         </div>
                     </div>
                 </HealthInfoBox>
@@ -59,9 +59,12 @@ function HealthInfoBox({header, content, children, className}:
     );
 }
 
-function HealthChanger({curHp, dispatch}: {curHp: number, dispatch: Dispatch<ICharInfoAction>}) {
+function HealthChanger({curHp, maxHp, dispatch}: {curHp: number, maxHp: number, dispatch: Dispatch<ICharInfoAction>}) {
     function incrementHp() {
-        dispatch({type: 'setCurHp', payload: curHp + 1});
+        const action: ICharInfoAction = {type: 'setCurHp', payload: curHp + 1};
+        if (curHp + 1 > maxHp) action.payload = maxHp;
+        dispatch(action);
+
     }
 
     function decrementHp() {
