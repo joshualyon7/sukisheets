@@ -20,6 +20,8 @@ export function charReducer(char: ICharInfo, action: ICharInfoAction): ICharInfo
         return { ...char, proficiencies: [...char.proficiencies, action.payload as ESkill] };
     case 'removeProficiency':
         return { ...char, proficiencies: char.proficiencies.filter(prof => prof !== action.payload as ESkill)};
+    case 'setCurHp':
+        return { ...char, curHp: action.payload as number };
     case 'reset':
         return initChar(action.payload as ICharInfo);
     default:
@@ -32,10 +34,18 @@ export interface ICharInfo {
     proficiencies: ESkill[];
     baseAc: number,
     classList: IClass[],
-    race: IRace
+    race: IRace,
+    playerName: string,
+    tempHp?: number,
+    curHp: number
 }
 
 export interface ICharInfoAction {
-    type: 'setAbility' | 'setName'| 'reset' | 'addProficiency' | 'removeProficiency',
-    payload: string | AbilityInfo | ICharInfo | ESkill
+    type: 'setAbility'
+        | 'setName'
+        | 'reset'
+        | 'addProficiency'
+        | 'removeProficiency'
+        | 'setCurHp',
+    payload: string | AbilityInfo | ICharInfo | ESkill | number
 }

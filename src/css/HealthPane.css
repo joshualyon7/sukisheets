@@ -1,0 +1,52 @@
+.health-info-box-header {
+    font-size: x-small;
+    font-weight: bold;
+    height: 30%;
+    width: 100%;
+}
+
+.health-info-box-content {
+    height: 50%;
+    font-size: x-large;
+    display: block;
+}
+
+.health-info-box-wrapper {
+    height: 100%;
+    border: 2px double black;
+}
+
+.spaced {
+    margin: 5px;
+    padding: 5px;
+}
+
+.hp-box {
+    width: 50%;
+}
+
+.cur-hp-input {
+    height: 50%;
+    width: 50%;
+    justify-content: right;
+    display: inline-flex;
+}
+
+.hp-fraction-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.max-hp {
+    display: inline-block;
+}
+
+.tmp-hp-box {
+    width: 25%;
+}
+
+.ac-box {
+    display: inline-block;
+    width: 25%;
+}

@@ -13,11 +13,6 @@ import { ICharInfo, charReducer, initChar } from './types/CharInfo';
 import { classes } from './types/Class';
 import { races } from './types/Race';
 
-const DEFAULT_ABILITY_SCORE = 12;
-const DEFAULT_BASE_AC = 10;
-const DEFAULT_CLASSES = [classes.get('wizard')!, classes.get('fighter')!];
-const DEFAULT_RACE = races.get('human')!;
-
 export const skillMap = new Map<EAbility, ESkill[]>([
     [EAbility.STR, [ESkill.ATHLETICS, ]],
     [EAbility.DEX, [ESkill.ACROBATICS, ESkill.SLEIGHT_OF_HAND, ESkill.STEALTH]],
@@ -30,28 +25,31 @@ export const skillMap = new Map<EAbility, ESkill[]>([
 const DEFAULT_ABILITY_MAP = new Map<EAbility, AbilityInfo>(Object.values(EAbility).map(ability => {
     return [ability, {
         name: ability,
-        value: DEFAULT_ABILITY_SCORE,
-        modifier: calculateModifier(DEFAULT_ABILITY_SCORE),
+        value: 12,
+        modifier: calculateModifier(12),
         relevantSkills: skillMap.get(ability) || []
     }];
 }));
 
+const defaultChar: ICharInfo = {
+    name: 'Tim',
+    abilities: DEFAULT_ABILITY_MAP,
+    proficiencies: [],
+    baseAc: 10,
+    classList: [classes.get('wizard')!, classes.get('fighter')!],
+    race: races.get('human')!,
+    playerName: 'Josh',
+    curHp: classes.get('fighter')!.hitDice
+};
+
 function App() {
-    const initialState: ICharInfo = {
-        name: 'Tim',
-        abilities: DEFAULT_ABILITY_MAP,
-        proficiencies: [],
-        baseAc: DEFAULT_BASE_AC,
-        classList: DEFAULT_CLASSES,
-        race: DEFAULT_RACE
-    };
-    const [curChar, dispatchChar] = useReducer(charReducer, initialState, initChar);
+    const [curChar, dispatchChar] = useReducer(charReducer, defaultChar, initChar);
 
     return (
         <Container fluid className='h-100 App'>
             <Row className='h-100'>
                 <Col lg={9} className='h-100'>
-                    <InfoPane/>
+                    <InfoPane char={curChar} _dispatch={dispatchChar}/>
                     <Row className='h-100'>
                         <StatPane char={curChar} dispatch={dispatchChar}/>
                         <CombatPane char={curChar} _dispatch={dispatchChar}/>

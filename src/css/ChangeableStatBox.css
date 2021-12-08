@@ -1,0 +1,15 @@
+.stat-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+.stat-input:not(:focus) {
+    border: none;
+}
+
+.center-block {
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
+ }

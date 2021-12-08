@@ -1,10 +1,12 @@
 import React, { Dispatch } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import { ICharInfo, ICharInfoAction } from '../types/CharInfo';
-import { diceToString } from '../utilities';
+import { diceToString, makeSignedNumber } from '../utilities';
 import HealthPane from './HealthPane';
 import '../css/CombatPane.css';
 import '../App.css';
+import { EAbility } from '../types/AbilityInfo';
+import { InfoBox } from './InfoBox';
 
 export default function CombatPane({char, _dispatch}: {
     char: ICharInfo, _dispatch: Dispatch<ICharInfoAction>
@@ -16,15 +18,15 @@ export default function CombatPane({char, _dispatch}: {
             <div className='raised-pane'>
                 <div>
                     Successes -
-                    <input className='save-input' type='checkbox'></input>
-                    <input className='save-input' type='checkbox'></input>
-                    <input className='save-input' type='checkbox'></input>
+                    <input className='save-input success' type='checkbox'></input>
+                    <input className='save-input success' type='checkbox'></input>
+                    <input className='save-input success' type='checkbox'></input>
                 </div>
                 <div>
                     Failures -
-                    <input className='save-input' type='checkbox'></input>
-                    <input className='save-input' type='checkbox'></input>
-                    <input className='save-input' type='checkbox'></input>
+                    <input className='save-input failure' type='checkbox'></input>
+                    <input className='save-input failure' type='checkbox'></input>
+                    <input className='save-input failure' type='checkbox'></input>
                 </div>
             </div>
         );
@@ -33,16 +35,16 @@ export default function CombatPane({char, _dispatch}: {
     return (
         <Col lg={8}>
             <Row>
-                <HealthPane char={char} _dispatch={_dispatch}></HealthPane>
+                <HealthPane char={char} dispatch={_dispatch}></HealthPane>
                 <Col className='pane'>
                     <Row>
                         <Col>
                             <InfoBox title='Hit Dice' value={hitDice}/>
-                            <InfoBox title='Initiative' value={'13'}/>
+                            <InfoBox title='Initiative' value={makeSignedNumber(char.abilities.get(EAbility.DEX)!.modifier)}/>
                         </Col>
                         <Col>
                             <InfoBox title='Death Saves'><DeathSavePane/></InfoBox>
-                            <InfoBox title='Speed'></InfoBox>
+                            <InfoBox title='Speed' value={`${char.race.baseSpeed}ft`}></InfoBox>
                         </Col>
                     </Row>
                 </Col>
@@ -58,12 +60,4 @@ export default function CombatPane({char, _dispatch}: {
 
 }
 
-function InfoBox({title, value, children}: {title: string, value?: string, children?: JSX.Element}) {
-    return (
-        <div className='info-box raised-pane'>
-            <div>{value || children}</div>
-            <div>{title}</div>
-        </div>
-    );
-}
 

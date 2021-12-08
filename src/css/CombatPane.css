@@ -1,9 +1,13 @@
-.info-box {
-    border: 1px solid black;
-    padding: 5px;
-}
 
 .save-input {
     display: inline-block;
     margin: 2px;
+}
+
+.save-input.failure [type="checkbox"]:after {
+    background-color: red;
+}
+
+.save-input.success {
+    background-color: green;
 }

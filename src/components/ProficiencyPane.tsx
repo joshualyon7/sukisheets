@@ -1,7 +1,7 @@
 import React, { Dispatch } from 'react';
 import '../css/ProficiencyPane.css';
 import { Table } from 'react-bootstrap';
-import { makeSignedNumber } from '../utilities';
+import { firstLetterCaps, makeSignedNumber } from '../utilities';
 import { ICharInfo, ICharInfoAction } from '../types/CharInfo';
 import { ESkill } from '../types/Skill';
 // import { Stat } from '../types/StatInfo';
@@ -35,7 +35,7 @@ export function ProficiencyPane({ char, dispatch }: { char: ICharInfo, dispatch:
                     type='checkbox'
                     onChange={handleProfToggle}/></td>
                 <td>{ability.toUpperCase()}</td>
-                <td>{`${skill.charAt(0).toUpperCase()}${skill.slice(1)}`}</td>
+                <td>{firstLetterCaps(skill)}</td>
                 <td>{makeSignedNumber(char.proficiencies.includes(skill) ? modifier + 2 : modifier)}</td>
             </tr>
 

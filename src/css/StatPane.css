@@ -4,15 +4,6 @@
     display: inline-flex;
 }
 
-.stat-input {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%;
-}
-.stat-input:not(:focus) {
-    border: none;
-}
 
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 

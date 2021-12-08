@@ -1,0 +1,8 @@
+.info-box {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.info-box-title {
+    font-weight: bold;
+}

@@ -27,3 +27,7 @@ export function makeSignedNumber(value: number): string {
 export function diceToString([amount, type]: DicePair): string {
     return `${amount}${EDice[type].toLowerCase()}`;
 }
+
+export function firstLetterCaps(word: string): string {
+    return `${word.charAt(0).toUpperCase()}${word.slice(1)}`;
+}
