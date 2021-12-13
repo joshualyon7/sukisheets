@@ -64,9 +64,7 @@ export function ProficiencyPane({ char, dispatch }: { char: ICharInfo, dispatch:
                         <th>Bonus</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {makeSkillBoxes()}
-                </tbody>
+                <tbody>{makeSkillBoxes()}</tbody>
             </Table>
         </div>
     );

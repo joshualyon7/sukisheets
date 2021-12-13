@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Col, Container, Row } from 'react-bootstrap';
 import './App.css';
@@ -12,6 +12,8 @@ import { ESkill } from './types/Skill';
 import { ICharInfo, charReducer, initChar } from './types/CharInfo';
 import { classes } from './types/Class';
 import { races } from './types/Race';
+import { SpellPaneModal } from './components/modals/SpellPaneModal';
+import { Button } from 'react-bootstrap';
 
 export const skillMap = new Map<EAbility, ESkill[]>([
     [EAbility.STR, [ESkill.ATHLETICS, ]],
@@ -44,11 +46,14 @@ const defaultChar: ICharInfo = {
 
 function App() {
     const [curChar, dispatchChar] = useReducer(charReducer, defaultChar, initChar);
+    const [spellListShow, setSpellListShow] = useState(false);
 
     return (
         <Container fluid className='h-100 App'>
             <Row className='h-100'>
                 <Col lg={9} className='h-100'>
+                    <SpellPaneModal show={spellListShow} setShow={setSpellListShow}/>
+                    <Button variant='primary' onClick={() => setSpellListShow(true)}/>
                     <InfoPane char={curChar} _dispatch={dispatchChar}/>
                     <Row className='h-100'>
                         <StatPane char={curChar} dispatch={dispatchChar}/>
