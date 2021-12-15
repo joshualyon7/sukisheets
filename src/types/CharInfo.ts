@@ -3,6 +3,7 @@ import { ESkill } from './Skill';
 import { EAbility } from './AbilityInfo';
 import { IClass } from './Class';
 import { IRace } from './Race';
+import { Spell } from './Spell';
 
 export function initChar(initialChar: ICharInfo) {
     return initialChar;
@@ -19,9 +20,11 @@ export function charReducer(char: ICharInfo, action: ICharInfoAction): ICharInfo
     case 'addProficiency':
         return { ...char, proficiencies: [...char.proficiencies, action.payload as ESkill] };
     case 'removeProficiency':
-        return { ...char, proficiencies: char.proficiencies.filter(prof => prof !== action.payload as ESkill)};
+        return { ...char, proficiencies: char.proficiencies.filter(prof => prof !== action.payload as ESkill) };
     case 'setCurHp':
         return { ...char, curHp: action.payload as number };
+    case 'setSpellBook':
+        return { ...char, spellBook: action.payload as Spell[] };
     case 'reset':
         return initChar(action.payload as ICharInfo);
     default:
@@ -37,7 +40,8 @@ export interface ICharInfo {
     race: IRace,
     playerName: string,
     tempHp?: number,
-    curHp: number
+    curHp: number,
+    spellBook: Spell[]
 }
 
 export interface ICharInfoAction {
@@ -46,6 +50,7 @@ export interface ICharInfoAction {
         | 'reset'
         | 'addProficiency'
         | 'removeProficiency'
-        | 'setCurHp',
-    payload: string | AbilityInfo | ICharInfo | ESkill | number
+        | 'setCurHp'
+        | 'setSpellBook',
+    payload: string | AbilityInfo | ICharInfo | ESkill | number | Spell[]
 }

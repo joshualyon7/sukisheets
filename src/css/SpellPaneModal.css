@@ -35,6 +35,9 @@
 .spell-header-sub {
     color: gray;
     display: flex;
+    font-size: small;
     flex: 1;
     justify-content: right;
+    align-items: flex-start;
+    padding-right: 1em;
 }

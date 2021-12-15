@@ -12,7 +12,7 @@ import { ESkill } from './types/Skill';
 import { ICharInfo, charReducer, initChar } from './types/CharInfo';
 import { classes } from './types/Class';
 import { races } from './types/Race';
-import { SpellPaneModal } from './components/modals/SpellPaneModal';
+import { SpellBook, SpellPaneModal } from './components/modals/SpellPaneModal';
 import { Button } from 'react-bootstrap';
 
 export const skillMap = new Map<EAbility, ESkill[]>([
@@ -41,7 +41,8 @@ const defaultChar: ICharInfo = {
     classList: [classes.get('wizard')!, classes.get('fighter')!],
     race: races.get('human')!,
     playerName: 'Josh',
-    curHp: classes.get('fighter')!.hitDice
+    curHp: classes.get('fighter')!.hitDice,
+    spellBook: []
 };
 
 function App() {
@@ -52,8 +53,7 @@ function App() {
         <Container fluid className='h-100 App'>
             <Row className='h-100'>
                 <Col lg={9} className='h-100'>
-                    <SpellPaneModal show={spellListShow} setShow={setSpellListShow}/>
-                    <Button variant='primary' onClick={() => setSpellListShow(true)}/>
+                    <SpellPaneModal char={curChar} dispatch={dispatchChar} show={spellListShow} setShow={setSpellListShow}/>
                     <InfoPane char={curChar} _dispatch={dispatchChar}/>
                     <Row className='h-100'>
                         <StatPane char={curChar} dispatch={dispatchChar}/>
@@ -62,6 +62,8 @@ function App() {
                 </Col>
                 <Col lg={3}>
                     <Row>
+                        <Button variant='primary' onClick={() => setSpellListShow(true)}>Manage Spells</Button>
+                        <SpellBook char={curChar} dispatch={dispatchChar} spells={curChar.spellBook}/>
                         Proficiencies and languages
                     </Row>
                     <Row>
