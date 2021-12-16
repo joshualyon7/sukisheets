@@ -6,6 +6,9 @@ import { Spell } from '../../types/Spell';
 import { isSpellList, SpellList } from '../../types/SpellList';
 import '../../css/SpellPaneModal.css';
 import { ICharInfo, ICharInfoAction } from '../../types/CharInfo';
+import BKP_SPELLS from '../../data/backupSpells.json';
+
+const TYPING_TIMEOUT = 250;
 
 enum _SpellFilterGroup {
     SCHOOL='School',
@@ -25,13 +28,15 @@ export function SpellPaneModal({show, setShow, char, dispatch}: {
     char: ICharInfo,
     dispatch: Dispatch<ICharInfoAction>
 }) {
-    const [fullSpellBook, setFullSpellBook] = useState<Spell[]>([]);
-    const [shownSpells, setShownSpells] = useState(fullSpellBook);
+    const [fullSpellBook, setFullSpellBook] = useState<Spell[]>(BKP_SPELLS);
+    const [shownSpells, setShownSpells] = useState<Spell[]>([]);
     const [uniqueClasses, setUniqueClasses] = useState<string[]>(['Necromancy']);
     const [uniqueSchools, setUniqueSchools] = useState<string[]>([]);
 
     useEffect(() => {
-        const asyncWrapper = async () => setFullSpellBook(await fetchSpells(setUniqueClasses, setUniqueSchools));
+        const asyncWrapper = async () => {
+            setFullSpellBook(await fetchSpells(setUniqueClasses, setUniqueSchools));
+        };
         asyncWrapper();
     }, []);
 
@@ -166,32 +171,101 @@ function SpellFilter({classes, schools, spells, setShownSpells}: {
     schools: string[],
     spells: Spell[],
     setShownSpells: Dispatch<SetStateAction<Spell[]>>}) {
-    console.log(classes, schools);
+    let typingTimer = setTimeout(() => 5, 1000);
+
+    const [searchFilter, setSearchFilter] = useState('');
+    const [schoolFilter, setSchoolFilter] = useState<string[]>([]);
+    const [classFilter, setClassFilter] = useState<string[]>([]);
+
+    useEffect(() => {
+        console.log(schoolFilter, searchFilter, classFilter);
+        filterSpells();
+    }, [schoolFilter, searchFilter, classFilter]);
 
     function handleSearchChange(e: any) {
         const target = e.target as HTMLInputElement;
-        if (target.value === '') {
-            setShownSpells(spells);
-            return;
-        }
-        const filteredSpells = spells.filter(spell => spell.name.toLowerCase().startsWith(target.value.toLowerCase().trim()));
+        setSearchFilter(target.value.toLowerCase());
+    }
+
+    function handleSchoolFilterChange(e: any) {
+        const target = e.target as HTMLInputElement;
+        target.checked ? setSchoolFilter([...schoolFilter, target.value.toLowerCase()])
+            : setSchoolFilter(schoolFilter.filter(school => school !== target.value));
+    }
+
+    function handleClassFilterChange(e: any) {
+        const target = e.target as HTMLInputElement;
+        target.checked ? setClassFilter([...classFilter, target.value.toLowerCase()])
+            : setClassFilter(classFilter.filter(dnd_class => dnd_class.toLowerCase() !== target.value.toLowerCase()));
+    }
+
+    function filterSpells() {
+        const filteredSpells = spells.filter(spell => {
+            const passesSchool = schoolFilter.includes(spell.school.toLowerCase());
+            const passesClass = spell.dnd_class.split(',').map(cls => cls.trim().toLowerCase()).some(cls => classFilter.includes(cls));
+            const passesSearch = spell.name.toLowerCase().startsWith(searchFilter.toLowerCase().trim());
+            let valid = true;
+            if (searchFilter !== '') {
+                valid = valid && passesSearch;
+                if (classFilter.length !== 0) {
+                    valid = valid && passesClass;
+                }
+                if (schoolFilter.length !== 0) {
+                    valid = valid && passesSchool;
+                }
+            } else if (classFilter.length !== 0) {
+                valid = valid && passesClass;
+                if (schoolFilter.length !== 0) {
+                    valid = valid && passesSchool;
+                }
+                if (searchFilter !== '') {
+                    valid = valid && passesSearch;
+                }
+            } else if (schoolFilter.length !== 0) {
+                valid = valid && passesSchool;
+                if (classFilter.length !== 0) {
+                    valid = valid && passesClass;
+                }
+                if (searchFilter !== '') {
+                    valid = valid && passesSearch;
+                }
+            }
+            return valid;
+        });
         setShownSpells(filteredSpells);
     }
 
     return (
         <Form>
             <FormGroup>
-                <FormControl type='text' placeholder='Search' onChange={(e) => handleSearchChange(e)}></FormControl>
-                {classes.forEach(dnd_class => {
-                    return (
-                        <Form.Check inline>
-                            <Form.Check.Label>{dnd_class}</Form.Check.Label>
-                            <Form.Check.Input id={`${dnd_class}-filter-check`} type='checkbox'></Form.Check.Input>
-                        </Form.Check>
-                    );
+                <FormControl
+                    type='text'
+                    placeholder='Search'
+                    onKeyUp={(e) => {
+                        typingTimer = setTimeout(handleSearchChange, TYPING_TIMEOUT, e);
+                    }}
+                    onKeyDown={() => clearTimeout(typingTimer)}></FormControl
+                >
+                Classes:<br/>
+                {classes.map(dnd_class => {
+                    return <Form.Check
+                        inline key={dnd_class}
+                        onChange={handleClassFilterChange}
+                        label={dnd_class}
+                        value={dnd_class}
+                        id={`${dnd_class}-filter-check`}
+                        type='checkbox'
+                    />;
                 })}<br/>
-                {schools.forEach(school => {
-                    return <Form.Check inline type='checkbox'>{school}</Form.Check>;
+                Schools:<br/>
+                {schools.map(school => {
+                    return <Form.Check
+                        onChange={handleSchoolFilterChange}
+                        key={school}
+                        label={school}
+                        value={school}
+                        inline type='checkbox'
+                    />;
                 })}
             </FormGroup>
         </Form>
