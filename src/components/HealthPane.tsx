@@ -9,7 +9,8 @@ import '../css/HealthPane.css';
 export default function HealthPane({char, dispatch}: {
     char: ICharInfo, dispatch: Dispatch<ICharInfoAction>
 }) {
-    const maxHp = Math.max.apply(Math, char.classList.map(c => c.hitDice));
+    const maxHp = Math.max.apply(Math, char.classList.map(c => c.hitDice))
+        + calculateModifier(char.abilities.get(EAbility.CON)!.value);
 
     function handleHpChange(e: React.FocusEvent<HTMLInputElement, Element>) {
         const target = e.target as HTMLInputElement;

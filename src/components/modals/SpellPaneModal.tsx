@@ -63,8 +63,9 @@ export function SpellBook({spells, char, dispatch}: {spells: Spell[], char: ICha
 
     return (
         <div className='spell-list'>
+            <span className='greyed-out'>{spells.length} spells</span>
             <Accordion defaultActiveKey='0'>
-                {spells.map(spell => {
+                {spells.sort((a, b) => a.level_int - b.level_int).map(spell => {
                     return <SpellListing char={char} dispatch={dispatch} key={spell.name} spell={spell}/>;
                 })}
             </Accordion>
@@ -176,11 +177,12 @@ function SpellFilter({classes, schools, spells, setShownSpells}: {
     const [searchFilter, setSearchFilter] = useState('');
     const [schoolFilter, setSchoolFilter] = useState<string[]>([]);
     const [classFilter, setClassFilter] = useState<string[]>([]);
+    const [shownLevel, setShownLevel] = useState(0);
 
     useEffect(() => {
         console.log(schoolFilter, searchFilter, classFilter);
         filterSpells();
-    }, [schoolFilter, searchFilter, classFilter]);
+    }, [schoolFilter, searchFilter, classFilter, shownLevel]);
 
     function handleSearchChange(e: any) {
         const target = e.target as HTMLInputElement;
@@ -190,7 +192,7 @@ function SpellFilter({classes, schools, spells, setShownSpells}: {
     function handleSchoolFilterChange(e: any) {
         const target = e.target as HTMLInputElement;
         target.checked ? setSchoolFilter([...schoolFilter, target.value.toLowerCase()])
-            : setSchoolFilter(schoolFilter.filter(school => school !== target.value));
+            : setSchoolFilter(schoolFilter.filter(school => school.toLowerCase() !== target.value.toLowerCase()));
     }
 
     function handleClassFilterChange(e: any) {
@@ -204,7 +206,7 @@ function SpellFilter({classes, schools, spells, setShownSpells}: {
             const passesSchool = schoolFilter.includes(spell.school.toLowerCase());
             const passesClass = spell.dnd_class.split(',').map(cls => cls.trim().toLowerCase()).some(cls => classFilter.includes(cls));
             const passesSearch = spell.name.toLowerCase().startsWith(searchFilter.toLowerCase().trim());
-            let valid = true;
+            let valid = shownLevel === spell.level_int;
             if (searchFilter !== '') {
                 valid = valid && passesSearch;
                 if (classFilter.length !== 0) {
@@ -245,7 +247,12 @@ function SpellFilter({classes, schools, spells, setShownSpells}: {
                         typingTimer = setTimeout(handleSearchChange, TYPING_TIMEOUT, e);
                     }}
                     onKeyDown={() => clearTimeout(typingTimer)}></FormControl
-                >
+                ><Form.Range
+                    value={shownLevel}
+                    onChange={(e) => setShownLevel(Number.parseInt(e.target.value))}
+                    step={1}
+                    min={0} max={9}
+                /><br/>
                 Classes:<br/>
                 {classes.map(dnd_class => {
                     return <Form.Check
